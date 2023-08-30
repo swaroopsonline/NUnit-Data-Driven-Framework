@@ -19,7 +19,17 @@ public class Base
     public void Setup()
     {
 
-        AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", @"/home/swaroop/Downloads/NUnitDataDrivenFramework/app.config");
+        string relativeConfigPath = "app.config";
+        // Console.WriteLine("Relative Path is: " + relativeConfigPath);
+        string customConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativeConfigPath);
+        // Console.WriteLine("Custom Config Path is: " + customConfigPath);
+
+        // Set the custom configuration file path for the current AppDomain
+        AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", customConfigPath);
+
+        // Refresh the configuration to apply the changes
+        ConfigurationManager.RefreshSection("appSettings");        
+
         string browserKey = ConfigurationManager.AppSettings["browser"];
         this.InitBrowser(browserKey);
 

@@ -12,7 +12,6 @@
 /home/swaroop/Downloads/NUnitDataDrivenFramework/bin/Debug/net7.0/selenium-manager/linux/selenium-manager
 /home/swaroop/Downloads/NUnitDataDrivenFramework/bin/Debug/net7.0/selenium-manager/macos/selenium-manager
 /home/swaroop/Downloads/NUnitDataDrivenFramework/bin/Debug/net7.0/selenium-manager/windows/selenium-manager.exe
-/home/swaroop/Downloads/NUnitDataDrivenFramework/bin/Debug/net7.0/NUnitDataDrivenFramework.dll.config
 /home/swaroop/Downloads/NUnitDataDrivenFramework/bin/Debug/net7.0/NUnitDataDrivenFramework.deps.json
 /home/swaroop/Downloads/NUnitDataDrivenFramework/bin/Debug/net7.0/NUnitDataDrivenFramework.runtimeconfig.json
 /home/swaroop/Downloads/NUnitDataDrivenFramework/bin/Debug/net7.0/NUnitDataDrivenFramework.dll
