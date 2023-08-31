@@ -5,6 +5,10 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Safari;
 using System;
 using NUnitDataDrivenFramework.TestUtils;
+using AventStack.ExtentReports;
+using AventStack.ExtentReports.Reporter;
+using NUnit.Framework.Interfaces;
+using AventStack.ExtentReports.Model;
 
 namespace NUnitDataDrivenFramework.TestSetup;
 
@@ -13,7 +17,24 @@ public class Base
 {
     // public static IWebDriver driver;
     public static ThreadLocal<IWebDriver> driver = new ThreadLocal<IWebDriver>();
+    public ExtentReports extent;
+    public ExtentTest extenttest;
 
+    [OneTimeSetUp]
+    public void TestSuiteSetup()
+    {
+        string workingDirectory = Environment.CurrentDirectory; //Get path of Base.cs
+        string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+        string reportPath = projectDirectory + "/index.html";
+
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath);
+        extent = new ExtentReports();
+        extent.AttachReporter(htmlReporter);
+        extent.AddSystemInfo("Host Name", "Local Host");
+        extent.AddSystemInfo("Environment", "QA");
+        extent.AddSystemInfo("UserName", "Swp-Automation");
+
+    }
 
     [SetUp]
     public void Setup()
@@ -28,7 +49,9 @@ public class Base
         AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", customConfigPath);
 
         // Refresh the configuration to apply the changes
-        ConfigurationManager.RefreshSection("appSettings");        
+        ConfigurationManager.RefreshSection("appSettings");
+
+        extenttest = extent.CreateTest(TestContext.CurrentContext.Test.Name);
 
         string browserKey = ConfigurationManager.AppSettings["browser"];
         this.InitBrowser(browserKey);
@@ -41,6 +64,16 @@ public class Base
     [TearDown]
     public void TearDown()
     {
+        var status = TestContext.CurrentContext.Result.Outcome.Status;
+        if (status == TestStatus.Failed)
+        {
+            extenttest.Fail("Test Case Failed");
+        }
+        else if (status == TestStatus.Passed)
+        {
+            extenttest.Pass("Test Case Passed");
+        }
+        extent.Flush(); // Flush method is important for the method to get generated.
 
         if (driver != null)
         {
@@ -58,6 +91,7 @@ public class Base
     public static IWebDriver GetDriver()
     {
         return driver.Value;
+
     }
 
 
@@ -67,6 +101,7 @@ public class Base
 
         switch (browserName.ToLower())
         {
+            
             case "chrome":
                 driver.Value = new ChromeDriver();
                 driver.Value.Manage().Window.Maximize();

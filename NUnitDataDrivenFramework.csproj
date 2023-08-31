@@ -15,10 +15,9 @@
     <PackageReference Include="Selenium.Support" Version="4.11.0"/>
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0"/>
     <PackageReference Include="SeleniumExtras.WaitHelpers" Version="1.0.2"/>
+    <PackageReference Include="ExtentReports" Version="4.1.0"/>
   </ItemGroup>
   <ItemGroup>
-    <!-- Other items -->
-    <!-- Add an EmbeddedResource entry for your JSON file -->
     <EmbeddedResource Include="TestData/TestData.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
