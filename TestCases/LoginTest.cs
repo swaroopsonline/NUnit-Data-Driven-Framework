@@ -21,15 +21,20 @@ public class LoginTest : Base
         // fblandingpage.InvalidLogin("testemail@tmail.com", "kafskdaf");
         fblandingpage.InvalidLogin(email, password);
         Thread.Sleep(5000);
+        // if (!homepageelement.isDisplayed())
+        // {
+        //     Assert.Fail("homepage element is not displayed");
+        // }
+        Assert.Fail();
 
     }
 
-    [Test]   
+    [Test]
     public void VerifyLoginDummy()
-    {        
+    {
 
-        FacebookLandingPage fblandingpage = new FacebookLandingPage();        
-        fblandingpage.InvalidLogin("asfdf@umail.com","klasfj8798");
+        FacebookLandingPage fblandingpage = new FacebookLandingPage();
+        fblandingpage.InvalidLogin("asfdf@umail.com", "klasfj8798");
         Thread.Sleep(5000);
 
     }

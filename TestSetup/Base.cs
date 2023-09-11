@@ -18,13 +18,17 @@ public class Base
     // public static IWebDriver driver;
     public static ThreadLocal<IWebDriver> driver = new ThreadLocal<IWebDriver>();
     public ExtentReports extent;
-    public ExtentTest extenttest;
+    public ExtentTest test;
 
     [OneTimeSetUp]
     public void TestSuiteSetup()
     {
         string workingDirectory = Environment.CurrentDirectory; //Get path of Base.cs
         string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+        Console.WriteLine("Path ---> " + projectDirectory);
+
+        DateTime time = DateTime.Now;
+        // string date = time.ToString("dd/MM/yyyy");
         string reportPath = projectDirectory + "/index.html";
 
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath);
@@ -51,7 +55,7 @@ public class Base
         // Refresh the configuration to apply the changes
         ConfigurationManager.RefreshSection("appSettings");
 
-        extenttest = extent.CreateTest(TestContext.CurrentContext.Test.Name);
+        test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
 
         string browserKey = ConfigurationManager.AppSettings["browser"];
         this.InitBrowser(browserKey);
@@ -64,14 +68,19 @@ public class Base
     [TearDown]
     public void TearDown()
     {
-        var status = TestContext.CurrentContext.Result.Outcome.Status;
+        var status = TestContext.CurrentContext.Result.Outcome.Status;// Status of the Test Case executed.
+
+        DateTime time = DateTime.Now;
+        String fileName = "Screenshot_" + time.ToString("hh_mm_ss") + ".png";
+
         if (status == TestStatus.Failed)
         {
-            extenttest.Fail("Test Case Failed");
+            test.Fail("Test Failed ", captureScreenShot(driver.Value, fileName));
+            test.Fail("Test Case Failed");
         }
         else if (status == TestStatus.Passed)
         {
-            extenttest.Pass("Test Case Passed");
+            test.Pass("Test Case Passed");
         }
         extent.Flush(); // Flush method is important for the method to get generated.
 
@@ -79,6 +88,13 @@ public class Base
         {
             driver.Value.Quit();
         }
+
+    }
+
+    [OneTimeTearDown]
+    public void TestSuiteTearDown()
+    {
+        extent.Flush(); //mandatory code for extent report
 
     }
 
@@ -94,6 +110,14 @@ public class Base
 
     }
 
+    public MediaEntityModelProvider captureScreenShot(IWebDriver driver, String screenshotName)
+    {
+        ITakesScreenshot ts = (ITakesScreenshot)driver;
+        var screenshot = ts.GetScreenshot().AsBase64EncodedString;
+        return MediaEntityBuilder.CreateScreenCaptureFromBase64String(screenshot, screenshotName).Build();
+
+    }
+
 
     public void InitBrowser(string browserName)
     {
@@ -101,7 +125,7 @@ public class Base
 
         switch (browserName.ToLower())
         {
-            
+
             case "chrome":
                 driver.Value = new ChromeDriver();
                 driver.Value.Manage().Window.Maximize();

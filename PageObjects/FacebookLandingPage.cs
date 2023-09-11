@@ -44,6 +44,7 @@ public class FacebookLandingPage : Base
         BrowserActions.Click(CreateAccount);
         BrowserActions.Type(FirstName, firstName);
         BrowserActions.Type(SurName, lastName);
+        
     }
 
 }
