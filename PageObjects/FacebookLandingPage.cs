@@ -8,13 +8,16 @@ namespace NUnitDataDrivenFramework.PageObjects;
 
 public class FacebookLandingPage : Base
 {
-    By Email = By.Id("email");
-    By Password = By.Id("pass");
-    By LoginButton = By.Name("login");
-    By CreateAccount = By.XPath("//a[text()='Create new account']");
-    By FirstName = By.Name("firstname");
-    By SurName = By.Name("lastname");
+    public By Email = By.Id("email");
+    public By Password = By.Id("pass");
+    public By LoginButton = By.Name("login");
+    public By CreateAccount = By.XPath("//a[text()='Create new account']");
+    public By FirstName = By.Name("firstname");
+    public By SurName = By.Name("lastname");
+    public By continueButton = By.XPath("//button[text()='Yes Continue']");
+    public By invalidPasswordErrorMessage = By.XPath("//div[contains(text(), 'Invalid username or password')]");
 
+   
     public void Login(string email, string pass)
     {
         // driver.FindElement(Email).SendKeys(email);
@@ -27,6 +30,19 @@ public class FacebookLandingPage : Base
     }
 
     public void InvalidLogin(string email, string pass)
+    {
+        // driver.FindElement(Email).SendKeys(email);
+        BrowserActions.Type(Email, email);
+        // driver.FindElement(Password).SendKeys(pass);
+        BrowserActions.Type(Password, pass);
+        // driver.FindElement(LoginButton).Click();
+        BrowserActions.Click(LoginButton);
+
+        BrowserActions.InvalidLoginDisplayedErrorMessage();
+
+    }
+
+    public void LoginWithInvalidPassword(string email, string pass)
     {
         // driver.FindElement(Email).SendKeys(email);
         BrowserActions.Type(Email, email);

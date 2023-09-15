@@ -1,6 +1,8 @@
 {
-    "validEmail": "testing3@pmail.com",
+    "validEmail": "swaroopsonline@gmail.com",
     "validPassword": "werwqr146",
     "firstName": "Harry",
-    "lastName": "Potter"
+    "lastName": "Potter",
+    "InvalidEmail": "testing3@pmail.com",
+    "InvalidPassword": "werwqr146"
 }
